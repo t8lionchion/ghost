@@ -68,7 +68,7 @@
 | ---- | ----------------------------- | -------------- |
 | 前端   | Next.js + React               | 頁面渲染、CSR／SSR   |
 |      | Axios / Fetch                 | API 串接         |
-|      | Tailwind CSS（可選）              | UI 排版          |
+|      | Bootstrap CSS（可選）              | UI 排版          |
 | 後端   | Django                        | Web 框架         |
 |      | Django REST Framework (DRF)   | 建立 JSON API    |
 |      | djangorestframework-simplejwt | JWT 認證         |
