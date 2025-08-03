@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghost Move - 鬼屋實境體驗</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(145deg, #000000, #220000, #000000);
+      background-size: 200% 200%;
+      animation: bgFlow 15s ease-in-out infinite;
+      color: #f2f2f2;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 1px 1px 3px #000;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes bgFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* 幽靈動畫背景 */
+    body::before {
+      content: "👻";
+      position: absolute;
+      top: 30%;
+      left: -10%;
+      font-size: 10rem;
+      color: rgba(255, 255, 255, 0.07);
+      animation: ghostFloat 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes ghostFloat {
+      0% {
+        transform: translateX(0) scale(1);
+        opacity: 0;
+      }
+
+      25% {
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: translateX(110vw) scale(1.2);
+        opacity: 0.15;
+      }
+
+      75% {
+        opacity: 0.4;
+      }
+
+      100% {
+        transform: translateX(0) scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* 多個幽靈背景 */
+    .ghost {
+      position: absolute;
+      font-size: 12rem;
+      color: rgba(255, 255, 255, 0.15);
+      animation: ghostFloat 30s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ghost:nth-child(1) {
+      top: 20%;
+      left: -10%;
+      animation-delay: 0s;
+    }
+
+    .ghost:nth-child(2) {
+      top: 40%;
+      left: -15%;
+      font-size: 15rem;
+      animation-delay: 10s;
+    }
+
+    .ghost:nth-child(3) {
+      top: 60%;
+      left: -12%;
+      font-size: 10rem;
+      animation-delay: 20s;
+    }
+
+    @keyframes ghostFloat {
+      0% {
+        transform: translateX(0) scale(1);
+        opacity: 0;
+      }
+
+      25% {
+        opacity: 0.4;
+      }
+
+      50% {
+        transform: translateX(120vw) scale(1.2);
+        opacity: 0.2;
+      }
+
+      75% {
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: translateX(0) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.9);
+      border-bottom: 3px solid #cc0000;
+    }
+
+    .navbar-brand {
+      font-family: 'Creepster', cursive;
+      font-size: 2rem;
+      color: #ff0000 !important;
+    }
+
+    .nav-link {
+      color: #fff !important;
+    }
+
+    .nav-link:hover {
+      color: #ff4444 !important;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Creepster', cursive;
+      font-size: 3.5rem;
+      color: #ff0000;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 1rem auto;
+    }
+
+    .card {
+      background-color: rgba(20, 20, 20, 0.85);
+      color: #f2f2f2;
+      border: 1px solid #660000;
+    }
+
+    .card-title {
+      font-family: 'Creepster', cursive;
+      color: #ff4444;
+    }
+
+    footer {
+      background-color: rgba(0, 0, 0, 0.9);
+      color: #ccc;
+      text-align: center;
+      padding: 1rem;
+      border-top: 3px solid #cc0000;
+    }
+
+    footer a {
+      color: #ff4444;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* 滑過時整列背景微變色、圓角 */
+    .profile-link {
+      transition: background .3s;
+      padding: .5rem;
+      border-radius: .25rem;
+    }
+
+    .profile-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">幽約地圖</a>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">地圖</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">活動</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">個人頁面</a></li>
+        </ul>
+        <!-- 使用者下拉選單 -->
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle p-0" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <!-- <img src="your-avatar.jpg" alt="Avatar" class="rounded-circle" width="32" height="32"> -->
+              <i class="bi bi-person-circle fs-4"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="#">會員</a></li>
+              <li><a class="dropdown-item" href="#">等級</a></li>
+              <li><a class="dropdown-item" href="#">姓名</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">登出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Header -->
+  <header>
+    <h1>幽約地圖</h1>
+    <p>
+      每個標記，都是一段無法解釋的真相。<br>
+      全台最陰路線，等你來解鎖。<br>
+      你的腳步，就是下個傳說的起點。
+    </p>
+  </header>
+
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card bg-dark text-light border-danger shadow-lg">
+          <div class="card-header text-center text-danger"
+            style="font-family: 'Creepster', cursive; font-size: 1.8rem;">
+            會員資料
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent">
+              <!-- 把這裡的 <a> 改為 collapse 觸發 -->
+              <a class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse" href="#userInfo" role="button" aria-expanded="false" aria-controls="userInfo">
+                <!-- 左側先放 Icon，再放文字 -->
+                <span class="d-flex align-items-center">
+                  <i class="bi bi-person-circle fs-5 me-2"></i>
+                  <!-- <img src="path/to/avatar.jpg" alt="用戶大頭貼" class="rounded-circle me-2 fs-5" width="40" height="40"> -->
+                  個人檔案
+                </span>
+                <i class="bi bi-chevron-down"></i>
+              </a>
+              <!-- 子列表，預設收合 -->
+              <ul class="list-group list-group-flush ps-3 collapse" id="userInfo">
+
+                <li class="list-group-item bg-transparent text-light">
+                  <span class="text-light">
+                    用戶：張三
+                  </span>
+                </li>
+                <li class="list-group-item bg-transparent text-light">
+                  帳號：user123
+                </li>
+              </ul>
+            </li>
+
+            <li class="list-group-item bg-transparent">
+              <a class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse" href="#activeInfo" role="button" aria-expanded="false"
+                aria-controls="activeInfo">
+
+                <span class="d-flex align-items-center">
+                  <i class="bi bi-bell-fill fs-5 me-2"></i>
+                  活動結果通知
+                </span>
+                <i class="bi bi-chevron-down"></i>
+              </a>
+              <ul class="list-group list-group-flush ps-3 collapse" id="activeInfo">
+                <li class="list-group-item bg-transparent text-light">
+                  <a href="#active1"
+                    class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                    aria-controls="activestart1" data-bs-toggle="collapse">
+                    基隆百年墓園導覽:
+                  </a>
+                  <ul class="list-group list-group-flush ps-3 collapse" id="active1">
+                    <li class="list-group-item bg-transparent text-light">剩餘抽獎次數:3次</li>
+                    <li class="list-group-item bg-transparent text-light">抽獎日期:2025/8/15</li>
+                    <li class="list-group-item bg-transparent text-light">
+                      <button class="btn btn-info">點擊抽獎</button>
+                    </li>
+                  </ul>
+                </li>
+                <li class="list-group-item bg-transparent text-light">
+                  <a href="#active2"
+                    class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                    aria-controls="active2" data-bs-toggle="collapse">
+                    信義區都市傳說任務:
+                  </a>
+                  <ul class="list-group list-group-flush ps-3 collapse" id="active2">
+                    <li class="list-group-item bg-transparent text-light">
+                      恭喜獲得幽約抱枕
+                    </li>
+                  </ul>
+                </li>
+                <li class="list-group-item bg-transparent text-light">
+                  <a href="#active3"
+                    class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                    aria-controls="active3" data-bs-toggle="collapse">
+                    台南禁地鬼屋闖關
+                  </a>
+                  <ul class="list-group list-group-flush ps-3 collapse" id="active3">
+                    <li class="list-group-item bg-transparent text-light">
+                      沒抽中QAQ
+                    </li>
+                  </ul>
+                </li>
+
+              </ul>
+            </li>
+            <li class="list-group-item bg-transparent">
+              <a class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse" href="#VIPInfo" role="button" aria-expanded="false" aria-controls="VIPInfo">
+                <span class="d-flex align-items-center">
+                  <i class="bi bi-gem fs-5 text-info me-2"></i>
+
+                  升級VIP
+                </span>
+
+                <i class="bi bi-chevron-down"></i>
+              </a>
+              <ul class="list-group list-group-flush ps-3 collapse" id="VIPInfo">
+                <li class="list-group-item bg-transparent text-light">
+                  <button class="btn btn-light">點擊購買</button>
+                </li>
+              </ul>
+            </li>
+            <li class="list-group-item bg-transparent">
+              <a class="text-light text-decoration-none d-flex justify-content-between align-items-center"
+                data-bs-toggle="collapse" href="#ContactInfo" role="button" aria-expanded="false"
+                aria-controls="ContactInfo">
+                <span class="d-flex align-items-center">
+                  <i class="bi bi-journal-bookmark-fill fs-5 text-white me-2"></i>
+                  幽約簿
+                </span>
+                <i class="bi bi-chevron-down"></i>
+              </a>
+              <ul class="list-group list-group-flush ps-3 collapse" id="ContactInfo">
+                <li class="list-group-item bg-transparent text-light">
+                  幽約進度:16/32
+                </li>
+                <li class="list-group-item bg-transparent text-light">
+                  <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="50"
+                    aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 50%"></div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li class="list-group-item bg-transparent">
+              <a href="#logout" class="text-danger text-decoration-none d-block">登出</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Ghost Move ｜<a href="#">聯絡我們</a>｜真實體驗，由你證明
+  </footer>
+
+
+  <!-- Bootstrap Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
