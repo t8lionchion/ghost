@@ -4,7 +4,7 @@ export function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container">
-                <a className="navbar-brand" href="#">Ghost Move</a>
+                <a className="navbar-brand" href="#">幽約地圖</a>
                 <button className="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                     <span className="navbar-toggler-icon"></span>
                 </button>
