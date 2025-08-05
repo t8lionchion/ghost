@@ -1,11 +1,14 @@
-import {Register} from "./register"
+"use clients"
+import { AfterLogin } from "./after_login"
+import {BeforeLogin} from "./before_login"
 import { Header } from "../../components/header"
-export function Account(){
+export function Accounts(){
     return(
         <>
-            <Header />
-            <Register />
+            <Header/>
+            <BeforeLogin/>
+            
         </>
     )
 }
-export default Account
+export default Accounts
