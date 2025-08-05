@@ -176,4 +176,13 @@ body {
     footer a:hover {
       text-decoration: underline;
     }
-  
+  /* 滑過時整列背景微變色、圓角 */
+    .profile-link {
+      transition: background .3s;
+      padding: .5rem;
+      border-radius: .25rem;
+    }
+
+    .profile-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }

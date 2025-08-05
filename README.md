@@ -1,4 +1,4 @@
-# ghost
+# 幽約地圖
 # Git 協作規範
 
 為了維持團隊開發流程順暢，採用以下 Git 協作規範：
@@ -50,7 +50,7 @@
 
 ## 一、專案概述
 
-* **GhostMove**：靈異地圖平台，前端採用 Next.js + React，後端使用 Django + DRF 提供 RESTful API，並以 JWT 保護。
+* **幽約地圖**：靈異地圖平台，前端採用 Next.js + React，後端使用 Django + DRF 提供 RESTful API，並以 JWT 保護。
 * 功能模組：
 
   * 使用者帳號（註冊／登入／權限）
