@@ -10,3 +10,9 @@ from accounts.models import Users
 class UsersRegisterView(generics.CreateAPIView):
     queryset = Users.objects.all()
     serializer_class = UsersSerializers
+# views.py
+from rest_framework_simplejwt.views import TokenObtainPairView
+from accounts.serializers import MyTokenObtainPairSerializer
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

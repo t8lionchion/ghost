@@ -138,3 +138,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),      # Access Token 有效時間
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),          # Refresh Token 有效時間
+    "ROTATE_REFRESH_TOKENS": False,                       # 是否每次刷新都換新 Refresh Token
+    "BLACKLIST_AFTER_ROTATION": False,                    # 搭配上面設定
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+}

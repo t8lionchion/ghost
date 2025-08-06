@@ -1,6 +1,8 @@
 from accounts.models import Users
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.hashers import check_password
 
 class UsersSerializers(serializers.ModelSerializer):
     class Meta:
@@ -27,3 +29,39 @@ class UsersSerializers(serializers.ModelSerializer):
         user.save()
         return user
     
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    account = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        account = attrs.get("account")
+        password = attrs.get("password")
+
+        # 取得使用者資料（你用的是自訂 User model 的 account 欄位）
+        try:
+            user_obj = Users.objects.get(account=account)
+        except Users.DoesNotExist:
+            raise serializers.ValidationError("帳號不存在")
+
+        # ❗ 用 check_password 取代 user_obj.check_password()
+        if not check_password(password, user_obj.password):
+            raise serializers.ValidationError("密碼錯誤")
+
+        if not user_obj.isActive:
+            raise serializers.ValidationError("此帳號已停用")
+
+        # ✅ 將 token 發行（重寫預設機制）
+        refresh = self.get_token(user_obj)  # 這裡也要修正變數名
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # 客製化 payload 欄位
+        token['username'] = user.username
+        token['account'] = user.account
+        token['role'] = user.role
+        return token
