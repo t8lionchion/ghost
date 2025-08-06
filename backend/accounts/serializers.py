@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 class UsersSerializers(serializers.ModelSerializer):
     class Meta:
@@ -65,3 +66,23 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['account'] = user.account
         token['role'] = user.role
         return token
+
+class MyTokenRefreshSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+        refresh_token = attrs.get("refresh")
+
+        try:
+            refresh = RefreshToken(refresh_token)
+            access = refresh.access_token
+
+            # ✅ 可以在這裡加入自訂 payload，例如：
+            user = refresh.get("user_id")
+            access["token_type"] = "access"
+
+            return {
+                "access": str(access),
+            }
+        except TokenError:
+            raise serializers.ValidationError({"refresh": "Refresh Token 無效或已過期"})
