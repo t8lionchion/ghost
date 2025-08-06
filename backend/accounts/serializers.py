@@ -78,7 +78,7 @@ class MyTokenRefreshSerializer(serializers.Serializer):
             access = refresh.access_token
 
             # ✅ 可以在這裡加入自訂 payload，例如：
-            user = refresh.get("user_id")
+            user = refresh.get("id")
             access["token_type"] = "access"
 
             return {
