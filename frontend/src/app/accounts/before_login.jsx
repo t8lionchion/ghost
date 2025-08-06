@@ -13,12 +13,22 @@ export function BeforeLogin() {
                             </div>
                             <div className="card-body">
                                 <form>
+                                    {/* 使用者名稱 */}
+                                    <div className="mb-3">
+                                        <label htmlFor="username" className="form-label">使用者</label>
+                                        <div className="input-group">
+                                            <span className="input-group-text bg-secondary text-light">
+                                                <i className="bi bi-person-circle"></i> 
+                                            </span>
+                                            <input type="text" id="username" className="form-control bg-transparent text-light" placeholder="輸入使用者名稱" required/>
+                                        </div>
+                                    </div>
                                     {/* <!-- 帳號 --> */}
                                     <div className="mb-3">
                                         <label htmlFor="account" className="form-label">帳號</label>
                                         <div className="input-group">
                                             <span className="input-group-text bg-secondary text-light">
-                                                <i className="bi bi-person-fill"></i>
+                                                <i className="bi bi-person-badge"></i>
                                             </span>
                                             <input type="text" id="account" className="form-control bg-transparent text-light" placeholder="輸入帳號" required/>
                                         </div>
