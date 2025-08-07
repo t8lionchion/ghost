@@ -5,22 +5,24 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import generics
 from accounts.serializers import UsersSerializers 
 from accounts.models import Users
+from rest_framework_simplejwt.views import TokenObtainPairView
+from accounts.serializers import MyTokenObtainPairSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from accounts.serializers import MyTokenRefreshSerializer
+
 # Create your views here.
 
 class UsersRegisterView(generics.CreateAPIView):
     queryset = Users.objects.all()
     serializer_class = UsersSerializers
 # views.py
-from rest_framework_simplejwt.views import TokenObtainPairView
-from accounts.serializers import MyTokenObtainPairSerializer
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from accounts.serializers import MyTokenRefreshSerializer
+
 
 class MyTokenRefreshView(APIView):
     def post(self, request):

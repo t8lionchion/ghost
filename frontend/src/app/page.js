@@ -1,4 +1,4 @@
-// app.jsx
+// home.jsx
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
@@ -13,8 +13,12 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { Circle } from './components/circle';
 
 const locations = [
-  { key: 'operaHouse', location: { lat: 25, lng: 121.2 } },
-
+  { key: '1', location: { lat: 25, lng: 121.2 }, level: "1" },
+  { key: '2', location: { lat: 25, lng: 121.5 }, level: "2" },
+  { key: '3', location: { lat: 25, lng: 121.6 }, level: "3" },
+  { key: '4', location: { lat: 24.2, lng: 121.2 }, level: "1" },
+  { key: '5', location: { lat: 24.6, lng: 121.5 }, level: "2" },
+  { key: '6', location: { lat: 23.8, lng: 121. }, level: "3" },
 ];
 
 
@@ -60,14 +64,33 @@ function PoiMarkers({ pois }) {
             zIndex: 10,            // 堆疊順序
           }}
         >
-          
+          {poi.level == 1 &&
             <img
               src="/img/level1.png"
               width={32}
               height={32}
               alt={poi.key}
             />
-          
+          }
+          {
+            poi.level == 2 &&
+            <img
+              src="/img/level2.png"
+              width={32}
+              height={32}
+              alt={poi.key}
+            />
+          }
+          {
+            poi.level == 3 &&
+            <img
+              src="/img/level3.png"
+              width={32}
+              height={32}
+              alt={poi.key}
+            />
+          }
+
         </AdvancedMarker>
       ))}
     </>
@@ -89,21 +112,26 @@ function TaiwanBounds() {
 }
 export default function Home() {
   return (
-    <div id="app" className="map-container">
-      <APIProvider
-        apiKey="AIzaSyAGxuirR3w8akHVf4ctRU3AueZs_udh5LA"
-        onLoad={() => console.log('Maps API has loaded.')}
-      >
-        <Map
-          defaultCenter={{ lat: 23.5, lng: 121 }}
-          defaultZoom={7}
-          mapId="#"
+    <>
+      <div className='container mb-4 mt-4 d-flex justify-content-end'>
+        <button className='btn btn-info'>上報事件</button>
+      </div>
+      <div id="app" className="map-container">
+        <APIProvider
+          apiKey="AIzaSyAGxuirR3w8akHVf4ctRU3AueZs_udh5LA"
+          onLoad={() => console.log('Maps API has loaded.')}
         >
-          <PoiMarkers pois={locations} />
-          <TaiwanBounds /> {/* 只用這個去設定初始範圍 */}
-        </Map>
+          <Map
+            defaultCenter={{ lat: 23.5, lng: 121 }}
+            defaultZoom={7}
+            mapId="#"
+          >
+            <PoiMarkers pois={locations} />
+            <TaiwanBounds /> {/* 只用這個去設定初始範圍 */}
+          </Map>
 
-      </APIProvider>
-    </div>
-  );
+        </APIProvider>
+      </div>
+    </>
+  )
 }
