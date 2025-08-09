@@ -22,5 +22,8 @@ class Users(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     update_at=models.DateTimeField(auto_now=True)
     last_login_at=models.DateTimeField(auto_now=True)
+    @property
+    def is_authenticated(self):
+        return True  # 被 JWT 認證後，DRF 會把你塞到 request.user
     def __str__(self):
         return self.username
