@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'events',
+    'lottery',
     'rest_framework',
     'drf_yasg',
     'corsheaders',
