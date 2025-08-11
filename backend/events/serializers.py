@@ -14,4 +14,25 @@ class GetActivity_fromSerializers(serializers.ModelSerializer):
     class Meta:
         model=Activity_Form
         fields = "__all__"
-        
+
+
+class QuestionOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Active_question_options
+        fields = ("id", "option_label", "option_value", "sort_order")
+
+class QuestionSerializer(serializers.ModelSerializer):
+    options = QuestionOptionSerializer(
+        source="options_by_options_id", many=True, read_only=True
+    )
+
+    class Meta:
+        model = Active_questions
+        fields = ("id", "question_text", "sort_order", "options")
+
+class ActivityWithQuestionsSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Activity_Form
+        fields = ("id", "Activity_name", "Activity_start_date", "Activity_end_date", "descripe", "questions")
