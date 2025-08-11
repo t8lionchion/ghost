@@ -86,4 +86,5 @@ class GetNumberOfDrawsView(APIView):
         times = LotteryEntry.objects.filter(
             user_id=user_id, activity_id=activity_id
         ).count()
-        return Response({"times": times}, status=200)
+        prize_list = list(LotteryEntry.objects.values('id','prize', 'is_winning'))  # ← 變成 list[dict]
+        return Response({"times": times,"prize":prize_list}, status=200)
