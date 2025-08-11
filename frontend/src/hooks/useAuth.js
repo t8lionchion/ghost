@@ -53,7 +53,7 @@ function useProvideAuth() {
     setLoading(true)
     setError(null)
     try {
-      const res = await api.post('/token/', { account, password })
+      const res = await api.post('/login/', { account, password })
       const { access, refresh } = res.data
       localStorage.setItem('accessToken', access)
       localStorage.setItem('refreshToken', refresh)
