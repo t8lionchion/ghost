@@ -186,3 +186,13 @@ body {
     .profile-link:hover {
       background: rgba(255, 255, 255, 0.1);
     }
+
+    html, body, #__next, #app {
+  height: 100%;
+  margin: 0;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}

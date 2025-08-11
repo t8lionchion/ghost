@@ -5,14 +5,12 @@ import axios from "axios";
 
 export function Register() {
   const router = useRouter()
-  const [username, setUsername] = useState("");
+  
   const [email, setEmail] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [CheckPassword, setCheckPassword] = useState("");
-  const handleusername = ((e) => {
-    setUsername(e.target.value)
-  })
+  
   const handleemail = ((e) => {
     setEmail(e.target.value)
   })
@@ -34,7 +32,7 @@ export function Register() {
     try {
       const res = await axios.post(
         process.env.NEXT_PUBLIC_API_BASE_URL+'/api/register/',
-        { username, email, account, password },
+        { "username":account, email, account, password },
         { headers: { 'Content-Type': 'application/json' } }
       )
       if (res.data.username) {
@@ -65,16 +63,6 @@ export function Register() {
             </div>
             <div className="card-body">
               <form>
-                {/* 姓名  */}
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">姓名</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-secondary text-light">
-                      <i className="bi bi-person-fill"></i>
-                    </span>
-                    <input type="text" id="name" className="form-control bg-transparent text-light" placeholder="輸入您的姓名" required value={username} onChange={handleusername} />
-                  </div>
-                </div>
                 {/* 電子郵件  */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">電子郵件</label>
