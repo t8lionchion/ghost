@@ -5,6 +5,7 @@ import BootstrapClient from '../providers/Bootstrap';
 import {Navbar} from '../components/navbar';
 import {Footer} from '../components/footer';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { AuthProvider } from '@/hooks/useAuth';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,13 +24,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="zh-TW">
-      
+      <AuthProvider>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
         {children}
         <Footer />
       </body>
-      
+      </AuthProvider>
       <BootstrapClient />
     </html>
   );

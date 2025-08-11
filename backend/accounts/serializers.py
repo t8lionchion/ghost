@@ -31,28 +31,42 @@ class UsersSerializers(serializers.ModelSerializer):
         return user
     
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username = None
     account = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+    class Meta:
+        fields = ('account', 'password')
+
+    def to_internal_value(self, data):
+        # 只解析 account 和 password，避免調用父類處理 username
+        account = data.get('account')
+        password = data.get('password')
+
+        if account is None:
+            raise serializers.ValidationError({"account": "此欄位為必填。"})
+
+        if password is None:
+            raise serializers.ValidationError({"password": "此欄位為必填。"})
+
+        return {'account': account, 'password': password}
 
     def validate(self, attrs):
         account = attrs.get("account")
         password = attrs.get("password")
 
-        # 取得使用者資料（你用的是自訂 User model 的 account 欄位）
         try:
             user_obj = Users.objects.get(account=account)
         except Users.DoesNotExist:
-            raise serializers.ValidationError("帳號不存在")
+            raise serializers.ValidationError({"account": "帳號不存在"})
 
-        # ❗ 用 check_password 取代 user_obj.check_password()
         if not check_password(password, user_obj.password):
-            raise serializers.ValidationError("密碼錯誤")
+            raise serializers.ValidationError({"password": "密碼錯誤"})
 
         if not user_obj.isActive:
-            raise serializers.ValidationError("此帳號已停用")
+            raise serializers.ValidationError({"account": "此帳號已停用"})
 
-        # ✅ 將 token 發行（重寫預設機制）
-        refresh = self.get_token(user_obj)  # 這裡也要修正變數名
+        refresh = self.get_token(user_obj)
         return {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
@@ -61,11 +75,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        # 客製化 payload 欄位
         token['username'] = user.username
         token['account'] = user.account
         token['role'] = user.role
         return token
+
 
 class MyTokenRefreshSerializer(serializers.Serializer):
     refresh = serializers.CharField()
