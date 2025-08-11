@@ -30,9 +30,6 @@ export function AfterLogin() {
                   <li className="list-group-item bg-transparent text-light">
                     用戶：{user?.username || "未提供"}
                   </li>
-                  <li className="list-group-item bg-transparent text-light">
-                    帳號：{user?.account || "未提供"}
-                  </li>
                 </ul>
               </li>
 

@@ -81,7 +81,8 @@ function useProvideAuth() {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     setUser(null)
-    router.push('/login')
+    alert("即將登出")
+    router.push('/accounts')
   }, [router])
 
   // 手動刷新 token
