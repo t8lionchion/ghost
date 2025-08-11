@@ -36,3 +36,5 @@ class ActivityWithQuestionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Activity_Form
         fields = ("id", "Activity_name", "Activity_start_date", "Activity_end_date", "descripe", "questions")
+
+
