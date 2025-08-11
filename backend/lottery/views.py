@@ -77,3 +77,13 @@ class SubmitActivityAnswersView(APIView):
             "times": stat.times
         }, status=status.HTTP_200_OK)
 
+class GetNumberOfDrawsView(APIView):
+    authentication_classes = [MyJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, activity_id, format=None):
+        user_id = request.user.id                     # 用 token 內的登入者
+        times = LotteryEntry.objects.filter(
+            user_id=user_id, activity_id=activity_id
+        ).count()
+        return Response({"times": times}, status=200)
