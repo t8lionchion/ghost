@@ -1,6 +1,6 @@
 # events/serializers.py
 from rest_framework import serializers
-
+from lottery.models import LotteryEntry
 class SubmitAnswersSerializer(serializers.Serializer):
     answers = serializers.ListField(
         child=serializers.DictField(child=serializers.CharField()),
@@ -19,3 +19,4 @@ class SubmitAnswersSerializer(serializers.Serializer):
             pairs[qid] = val
         attrs['pairs'] = pairs
         return attrs
+
