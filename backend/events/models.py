@@ -6,6 +6,7 @@ class Activity_Form(models.Model):
     Activity_name=models.CharField(max_length=128)
     Activity_start_date=models.DateTimeField()
     Activity_end_date=models.DateTimeField()
+    address=models.CharField(max_length=1024)
     descripe=models.CharField(max_length=1024)
     def __str__(self):
         return self.Activity_name
