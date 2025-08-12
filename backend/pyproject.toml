@@ -11,4 +11,6 @@ dependencies = [
     "djangorestframework-simplejwt>=5.5.1",
     "drf-yasg>=1.21.10",
     "mysqlclient>=2.2.7",
+    "pillow>=11.3.0",
+    "requests>=2.32.4",
 ]
