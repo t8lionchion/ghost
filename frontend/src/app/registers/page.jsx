@@ -1,3 +1,4 @@
+'use client'
 import {Register} from "./register"
 import { Header } from "../../components/header"
 export function Account(){
