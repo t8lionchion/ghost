@@ -86,3 +86,18 @@ api.interceptors.response.use(
 )
 
 export default api
+
+export async function getAllActivity() {
+  try {
+    const response = await api.get('/GetAllActivityView/');
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch activity list:', error);
+    throw error;
+  }
+}
+
+export async function getActivityById(id) {
+  const response = await api.get(`/GetActivity_form/${id}/`)
+  return response.data
+}
