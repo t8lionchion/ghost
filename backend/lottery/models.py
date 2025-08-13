@@ -10,7 +10,8 @@ class LotteryEntry(models.Model):
                                  related_name='lottery_entries')
     is_winning = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    prize=models.CharField(max_length=128)
+    times=models.IntegerField()
     class Meta:
         indexes = [
             models.Index(fields=['activity', 'is_winning']),
