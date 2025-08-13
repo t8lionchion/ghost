@@ -7,6 +7,8 @@ class GetAllActivitySerializers(serializers.Serializer):
     descripe=serializers.CharField(read_only=True)
     address=serializers.CharField(read_only=True)
     get_activity_form=serializers.SerializerMethodField()
+    Activity_start_date=serializers.DateTimeField()
+    Activity_end_date=serializers.DateTimeField()
     def get_activity_form(self,obj):
         return obj.id ,obj.Activity_name,obj.descripe,obj.address
 

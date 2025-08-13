@@ -66,6 +66,7 @@ function useProvideAuth() {
       scheduleRefresh(expiresIn)
 
       setLoading(false)
+      router.push('/afterlogin')
       return { success: true }
     } catch (e) {
       setError('登入失敗，請確認帳號密碼')

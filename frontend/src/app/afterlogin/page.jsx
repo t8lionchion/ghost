@@ -1,11 +1,17 @@
 "use client"
-
+import axios from 'axios'
 import { useAuth } from "@/hooks/useAuth"
-
-export function AfterLogin() {
+import { Header } from "../../components/header"
+import {Activity} from './activity'
+export default function AfterLogin() {
   const { user, logout } = useAuth()
-
+ 
+  
+  
+  
   return (
+    <>
+    <Header/>
     <div className="container my-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -43,8 +49,9 @@ export function AfterLogin() {
                   </span>
                   <i className="bi bi-chevron-down"></i>
                 </a>
+                <Activity/>
                 <ul className="list-group list-group-flush ps-3 collapse" id="activeInfo">
-                  <li className="list-group-item bg-transparent text-light">
+                  <li className="list-group-item bg-transparent text-light" >
                     <a href="#active1"
                       className="text-light text-decoration-none d-flex justify-content-between align-items-center"
                       aria-controls="activestart1" data-bs-toggle="collapse">
@@ -135,5 +142,6 @@ export function AfterLogin() {
         </div>
       </div>
     </div>
+    </>
   )
 }
