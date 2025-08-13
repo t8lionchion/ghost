@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { Header } from "@/components/header"
 import { getAllActivity } from '@/utils/api'
 
@@ -32,15 +33,22 @@ const Task = () => {
         <div className="row g-4">
           {activities.map(activity => (
             <div className="col-md-4" key={activity.id}>
-              <div className="card h-100">
-                <div className="card-body">
-                  <h5 className="card-title">{activity.Activity_name}</h5>
-                  <p className="card-text">{activity.descripe}</p>
-                  <p className="card-text text-muted">
-                    <small className='card-text'>📍 {activity.address}</small>
-                  </p>
+              <Link
+                href={`/details/${activity.id}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div className="card h-100" style={{ cursor: 'pointer' }}>
+                  <div className="card-body">
+                    <h5 className="card-title">{activity.Activity_name}</h5>
+                    <p className="card-text">{activity.descripe}</p>
+                    {activity.address && (
+                      <p className="card-text">
+                        <small>📍 {activity.address}</small>
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>

@@ -96,3 +96,8 @@ export async function getAllActivity() {
     throw error;
   }
 }
+
+export async function getActivityById(id) {
+  const response = await api.get(`/GetActivity_form/${id}/`)
+  return response.data
+}
