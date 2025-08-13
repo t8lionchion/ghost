@@ -27,14 +27,16 @@ export default function GetEventsPage() {
   }, [event]);
 
   useEffect(() => {
-    if (!id) { setErr("缺少事件 id"); return; }
+    if (!id) { 
+      setErr("缺少事件 id"); return; 
+    }
     axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/records/${id}/`, {
       headers: { Authorization: token ? `Bearer ${token}` : "" }
     })
       .then((res) => setEvent(res.data))
       .catch((e) => {
         const s = e?.response?.status;
-        setErr(s === 403 ? "你沒有權限查看此事件（僅 VIP 或上報者本人）"
+        setErr(s === 401 ? "請註冊後才可以觀看"
              : s === 404 ? "找不到事件"
              : "載入失敗");
       });

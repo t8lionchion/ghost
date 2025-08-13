@@ -59,8 +59,8 @@ class EventDetailView(APIView):
     def get(self, request, pk):
         obj = get_object_or_404(Event_Record, pk=pk)
         # 物件層級權限
-        checker = IsVipOrOwner()
+        """ checker = IsVipOrOwner()
         if not checker.has_object_permission(request, self, obj):
-            return Response({"detail": "無權限查看此事件"}, status=403)
+            return Response({"detail": "無權限查看此事件"}, status=403) """
         data = EventRecordLocationDetailSerializer(obj, context={'request': request}).data
         return Response(data, status=200)
