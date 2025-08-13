@@ -5,6 +5,21 @@ import axios from "axios";
 
 /** 單一活動項目 */
 export function Activityli({ id, Activity_name, times, Activity_end_date }) {
+  function handlebutton(times){
+    if(times==0){
+      return (
+        <li className="list-group-item bg-transparent text-light">
+          <button className="btn btn-info" style={{pointerEvents:"none"}}>不可點擊</button>
+        </li>
+      )
+    }else if(times>0){
+      return(
+        <li className="list-group-item bg-transparent text-light">
+          <button className="btn btn-info" key={id}>點擊抽獎</button>
+        </li>
+      )
+    }
+  }
   return (
     <li className="list-group-item bg-transparent text-light">
       <a
@@ -23,9 +38,7 @@ export function Activityli({ id, Activity_name, times, Activity_end_date }) {
         <li className="list-group-item bg-transparent text-light">
           抽獎日期: {Activity_end_date ?? "-"}
         </li>
-        <li className="list-group-item bg-transparent text-light">
-          <button className="btn btn-info">點擊抽獎</button>
-        </li>
+        {handlebutton(times)}
       </ul>
     </li>
   );

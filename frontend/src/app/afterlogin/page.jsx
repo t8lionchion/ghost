@@ -50,46 +50,6 @@ export default function AfterLogin() {
                   <i className="bi bi-chevron-down"></i>
                 </a>
                 <Activity/>
-                <ul className="list-group list-group-flush ps-3 collapse" id="activeInfo">
-                  <li className="list-group-item bg-transparent text-light" >
-                    <a href="#active1"
-                      className="text-light text-decoration-none d-flex justify-content-between align-items-center"
-                      aria-controls="activestart1" data-bs-toggle="collapse">
-                      基隆百年墓園導覽
-                    </a>
-                    <ul className="list-group list-group-flush ps-3 collapse" id="active1">
-                      <li className="list-group-item bg-transparent text-light">剩餘抽獎次數:3次</li>
-                      <li className="list-group-item bg-transparent text-light">抽獎日期:2025/8/15</li>
-                      <li className="list-group-item bg-transparent text-light">
-                        <button className="btn btn-info">點擊抽獎</button>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="list-group-item bg-transparent text-light">
-                    <a href="#active2"
-                      className="text-light text-decoration-none d-flex justify-content-between align-items-center"
-                      aria-controls="active2" data-bs-toggle="collapse">
-                      信義區都市傳說任務
-                    </a>
-                    <ul className="list-group list-group-flush ps-3 collapse" id="active2">
-                      <li className="list-group-item bg-transparent text-light">
-                        恭喜獲得幽約抱枕
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="list-group-item bg-transparent text-light">
-                    <a href="#active3"
-                      className="text-light text-decoration-none d-flex justify-content-between align-items-center"
-                      aria-controls="active3" data-bs-toggle="collapse">
-                      台南禁地鬼屋闖關
-                    </a>
-                    <ul className="list-group list-group-flush ps-3 collapse" id="active3">
-                      <li className="list-group-item bg-transparent text-light">
-                        沒抽中QAQ
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
               </li>
 
               {/* 升級VIP */}
