@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { getActivityById, getActivityGate, postActivityCheckin } from '@/utils/api'
+import { getActivityById, getActivityGate, postActivityCheckin, Checkjoined } from '@/utils/api'
 import { Header } from '@/components/header'
 
 export default function DetailPage() {
@@ -49,6 +49,19 @@ export default function DetailPage() {
 
   const handleStart = async () => {
     if (!id) return
+
+    // 1) 先檢查是否已參加；已參加就直接結束流程
+    try {
+      const { is_joined } = await Checkjoined(id)
+      if (is_joined) {
+        alert('使用者參加過了')
+        router.replace(`/`)    // 可用 replace 不留瀏覽器返回紀錄
+        return                 // ← 關鍵：導頁後立刻結束，避免跑到下面
+      }
+    } catch {
+      setError('確認參與狀態失敗，請稍後再試')
+      return
+    }
     const gate = gateResp && gateResp.gate
     if (!gate) {
       setError('活動尚未設定定位門檻，或門檻載入失敗')

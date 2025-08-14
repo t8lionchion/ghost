@@ -130,3 +130,8 @@ export const postActivityCheckin = (id, payload /* { lat, lng } */) =>
   api.post(`activities/${id}/checkin/`, payload).then(r => r.data);
 // 期望回傳：{ ok: boolean, distance?: number, message?: string }
 
+export const Checkjoined=async(id)=>{
+  const res=await api.get(`activities/${id}/checkjoined/`)
+  return res.data
+}
+  
