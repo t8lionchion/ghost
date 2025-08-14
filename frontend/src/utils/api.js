@@ -114,11 +114,13 @@ export async function getActivityQuestions(id) {
 }
 
 // src/utils/api.js
+
 export async function submitActivityAnswers(active_id, answers) {
-  // active_id 必須有傳進來
-  if (!active_id) throw new Error('active_id 不可為空！');
+  if (!active_id || !Array.isArray(answers)) throw new Error("active_id和answers不得為空");
+  // (axios 攔截器會自動加 JWT，baseURL請確保設為 /api)
   const response = await api.post(`/activities/${active_id}/submit/`, { answers });
   return response.data;
 }
+
 
 

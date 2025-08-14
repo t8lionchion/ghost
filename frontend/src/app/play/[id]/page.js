@@ -9,7 +9,7 @@ export default function PlayPage() {
   const router = useRouter();
 
   const [activity, setActivity] = useState(null);
-  const [answers, setAnswers] = useState({}); // {question_id: value}
+  const [answers, setAnswers] = useState({}); // { question_id: value }
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [unanswered, setUnanswered] = useState([]); // 未作答題目 id 列表
@@ -33,7 +33,6 @@ export default function PlayPage() {
   // 選擇選項
   const handleOptionSelect = (questionId, value) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
-    // 取消該題未答狀態
     setUnanswered((prev) => prev.filter((qid) => qid !== questionId));
   };
 
@@ -41,7 +40,7 @@ export default function PlayPage() {
   const handleSubmit = async () => {
     if (!activity) return;
 
-    // 找出未作答的題目 id
+    // 防漏答檢查
     const unansweredList = activity.questions
       .filter((q) => !answers[q.id])
       .map((q) => q.id);
@@ -53,12 +52,16 @@ export default function PlayPage() {
     }
 
     const answersArray = Object.entries(answers).map(([questionId, value]) => ({
-      question_id: parseInt(questionId),
+      question_id: parseInt(questionId, 10),
       value,
     }));
 
+    console.log("即將送出的 API URL:", `/activities/${id}/submit/`);
+    console.log("送出的資料格式:", { answers: answersArray });
+
     try {
       setSubmitting(true);
+      // 依文件要求傳 { answers: [...] }
       const result = await submitActivityAnswers(id, answersArray);
 
       if (result.passed) {
@@ -66,9 +69,12 @@ export default function PlayPage() {
       } else {
         alert(`😢 沒通過，答對 ${result.correct_count}/${result.total} 題\n${result.message || ''}`);
       }
-      router.push(`/details/${id}`);
+      // 延遲跳轉確保使用者看到訊息
+      setTimeout(() => {
+        router.push(`/details/${id}`);
+      }, 300);
     } catch (err) {
-      console.error(err);
+      console.error("提交發生錯誤:", err);
       alert('提交失敗，請稍後再試');
     } finally {
       setSubmitting(false);
@@ -111,8 +117,8 @@ export default function PlayPage() {
                       padding: '6px 10px',
                       borderRadius: 6,
                       cursor: 'pointer',
-                      background: selected ? '#ffffffff' : '#222',
-                      color: selected ? '#000000ff' : '#eee',
+                      background: selected ? '#fff' : '#222',
+                      color: selected ? '#000' : '#eee',
                       border: selected ? '1px solid #2ecc71' : '1px solid #444',
                       transition: 'background 0.2s,border 0.2s',
                     }}

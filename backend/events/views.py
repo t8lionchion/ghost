@@ -140,7 +140,7 @@ class SubmitActivityAnswersAPIView(APIView):
     def post(self, request, active_id):
         user = request.user
 
-        # 1. 檢查活動是否存在
+        # 1. 確認活動存在
         activity = get_object_or_404(Activity_Form, pk=active_id)
 
         # 2. 檢查活動時間
@@ -154,45 +154,44 @@ class SubmitActivityAnswersAPIView(APIView):
 
         question_dict = {q.id: q for q in questions}
 
-        # 4. 解析前端傳來的答案
-        answers = request.data.get("answers")
+        # 4. 解析 request body
+        answers = request.data.get('answers')
         if not isinstance(answers, list):
-            return Response({"message": "answers 應為陣列"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "answers 必須是陣列"}, status=status.HTTP_400_BAD_REQUEST)
 
         correct_count = 0
         for ans in answers:
             qid = ans.get("question_id")
             val = ans.get("value")
-            if not qid or not val:
+            if not qid or val is None:
                 continue
-            q = question_dict.get(qid)
-            if not q:
+            question = question_dict.get(qid)
+            if not question:
                 continue
-            if q.answer.strip() == val.strip():  # 精確比對
+            if question.answer.strip() == val.strip():
                 correct_count += 1
 
         total = len(questions)
         passed = correct_count > (total / 2)
 
-        # 5. 更新 / 建立 UserProgress
+        # 5. 更新 / 建立 UserProgress 抽獎次數
         progress, created = UserProgress.objects.get_or_create(
             user=user,
             activity=activity,
-            defaults={"unlocked_stage": 0, "lottery_times": 0}  # 新增時先預設
+            defaults={"unlocked_stage": 0, "lottery_times": 0}
         )
-
         if passed:
             progress.lottery_times += 1
             progress.save()
 
-        # 6. 準備回應
-        res = {
+        # 6. 回應符合文件規格
+        res_data = {
             "passed": passed,
             "correct_count": correct_count,
             "total": total,
-            "times": progress.lottery_times,
+            "times": progress.lottery_times
         }
         if not passed:
-            res["message"] = "答對未達一半，無法取得抽獎次數。"
+            res_data["message"] = "答對未達一半，無法取得抽獎次數。"
 
-        return Response(res, status=status.HTTP_200_OK)
+        return Response(res_data, status=status.HTTP_200_OK)
