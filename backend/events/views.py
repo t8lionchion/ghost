@@ -64,7 +64,7 @@ class GetActivityWithQuestionsView(APIView):
 class GateInfoView(APIView):
     """
     GET /api/activities/<id>/gate/
-    回傳此活動的 Gate 設定與目前使用者是否已通過 Gate。
+    回傳此活動的 經緯度 設定與目前使用者是否已通過 經緯度。
     """
     authentication_classes = [MyJWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -98,8 +98,9 @@ class GateInfoView(APIView):
 
 class CheckinView(APIView):
     """
-    POST /api/activities/<id>/checkin/
-    Body: { "lat": <float>, "lng": <float> }
+    POST /api/activities/id/checkin/
+    將使用者的經緯度傳給後端
+    request格式{ "lat": <float>, "lng": <float> }
     伺服器驗證是否在 Gate 半徑內，通過則標記 UserProgress。
     """
     authentication_classes = [MyJWTAuthentication]
