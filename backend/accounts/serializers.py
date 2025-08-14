@@ -29,7 +29,7 @@ class UsersSerializers(serializers.ModelSerializer):
         user.password = make_password(password)
         user.save()
         return user
-    
+  
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     username = None
     account = serializers.CharField()
