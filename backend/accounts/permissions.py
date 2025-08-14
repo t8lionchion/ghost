@@ -1,4 +1,4 @@
-# records/permissions.py
+# accounts/permissions.py
 from rest_framework.permissions import BasePermission
 
 class IsVipOrOwner(BasePermission):
