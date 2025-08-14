@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from events.serializers import GetActivity_fromSerializers
-from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions, generics
 from events.models import Activity_Form,Active_questions,Active_question_options,GeoCheckpoint, UserProgress
 from django.http import Http404
 from events.serializers import GetAllActivitySerializers
@@ -14,7 +13,8 @@ from accounts.auth import MyJWTAuthentication
 from django.db.models import Prefetch
 from events.serializers import ActivityWithQuestionsSerializer
 from events.utils import haversine_m
-from django.shortcuts import get_object_or_404 
+from django.utils.timezone import now
+from .models import UserProgress, Activity_Form, Active_questions
 # Create your views here.
 
 class GetActivity_fromView(APIView):
@@ -133,3 +133,66 @@ class CheckinView(APIView):
             "distance_m": round(dist, 2),
             "radius_m": gate.radius_m
         }, status=status.HTTP_400_BAD_REQUEST)
+    
+class SubmitActivityAnswersAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, active_id):
+        user = request.user
+
+        # 1. 檢查活動是否存在
+        activity = get_object_or_404(Activity_Form, pk=active_id)
+
+        # 2. 檢查活動時間
+        if not (activity.Activity_start_date <= now() <= activity.Activity_end_date):
+            return Response({"message": "不在活動時間內"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 3. 取得該活動的題目
+        questions = Active_questions.objects.filter(active=activity)
+        if not questions.exists():
+            return Response({"message": "此活動尚無題目"}, status=status.HTTP_400_BAD_REQUEST)
+
+        question_dict = {q.id: q for q in questions}
+
+        # 4. 解析前端傳來的答案
+        answers = request.data.get("answers")
+        if not isinstance(answers, list):
+            return Response({"message": "answers 應為陣列"}, status=status.HTTP_400_BAD_REQUEST)
+
+        correct_count = 0
+        for ans in answers:
+            qid = ans.get("question_id")
+            val = ans.get("value")
+            if not qid or not val:
+                continue
+            q = question_dict.get(qid)
+            if not q:
+                continue
+            if q.answer.strip() == val.strip():  # 精確比對
+                correct_count += 1
+
+        total = len(questions)
+        passed = correct_count > (total / 2)
+
+        # 5. 更新 / 建立 UserProgress
+        progress, created = UserProgress.objects.get_or_create(
+            user=user,
+            activity=activity,
+            defaults={"unlocked_stage": 0, "lottery_times": 0}  # 新增時先預設
+        )
+
+        if passed:
+            progress.lottery_times += 1
+            progress.save()
+
+        # 6. 準備回應
+        res = {
+            "passed": passed,
+            "correct_count": correct_count,
+            "total": total,
+            "times": progress.lottery_times,
+        }
+        if not passed:
+            res["message"] = "答對未達一半，無法取得抽獎次數。"
+
+        return Response(res, status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { getActivityById } from '@/utils/api'
-import {Header} from '@/components/header'
+import { Header } from '@/components/header'
 const DetailPage = () => {
   const params = useParams()
   const router = useRouter()
@@ -38,7 +38,7 @@ const DetailPage = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <section className="container my-5" style={{ maxWidth: 600, background: '#111111ff', borderRadius: 12, padding: 24 }}>
         <div>
           <div style={{ fontWeight: 600, fontSize: 20, marginBottom: 16 }}>{activity.Activity_name}</div>
@@ -57,9 +57,9 @@ const DetailPage = () => {
               fontSize: 16,
               cursor: 'pointer'
             }}
-            onClick={() => alert('開始遊玩功能待實作')}
+            onClick={() => router.push(`/play/${id}`)}
           >
-            開始遊玩活動按鈕
+            開始遊玩活動
           </button>
         </div>
       </section>

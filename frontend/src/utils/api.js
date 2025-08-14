@@ -101,3 +101,24 @@ export async function getActivityById(id) {
   const response = await api.get(`/GetActivity_form/${id}/`)
   return response.data
 }
+
+// 取得活動 + 題目 + 選項
+export async function getActivityQuestions(id) {
+  try {
+    const response = await api.get(`/activities/${id}/questions/`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch activity questions:', error);
+    throw error;
+  }
+}
+
+// src/utils/api.js
+export async function submitActivityAnswers(active_id, answers) {
+  // active_id 必須有傳進來
+  if (!active_id) throw new Error('active_id 不可為空！');
+  const response = await api.post(`/activities/${active_id}/submit/`, { answers });
+  return response.data;
+}
+
+
