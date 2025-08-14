@@ -13,9 +13,8 @@ import { Circle } from './components/circle';
 // 取得資料 API
 const fetchLocations = async () => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/records/locations/public`,
-    { headers: { 'Content-Type': 'application/json' } }
-  );
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/records/locations/public/`
+);
 
   const data = Array.isArray(res.data) ? res.data : [];
   return data.map(item => ({

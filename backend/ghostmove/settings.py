@@ -155,7 +155,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
-CORS_ALLOW_CREDENTIALS=True
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'  # 或你的 media 實際資料夾路徑
 GOOGLE_MAPS_API_KEY ='AIzaSyAGxuirR3w8akHVf4ctRU3AueZs_udh5LA'
