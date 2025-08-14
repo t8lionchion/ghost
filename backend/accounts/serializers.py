@@ -100,3 +100,8 @@ class MyTokenRefreshSerializer(serializers.Serializer):
             }
         except TokenError:
             raise serializers.ValidationError({"refresh": "Refresh Token 無效或已過期"})
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Users
+        fields=['username','email','account','role','isActive','created_at','update_at','last_login_at']   

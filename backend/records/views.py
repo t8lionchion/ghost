@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db import transaction
-
+from .pagination import StandardResultsSetPagination
 class ChangeEventRecordView(APIView):
     authentication_classes = [MyJWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -78,13 +78,13 @@ class NotReviewedEventLocationsView(APIView):
         ).exclude(lat__isnull=True).exclude(lng__isnull=True)
 
         # Admin(3) 看全部；其他人只能看自己的
-        if role == 3:
-            qs = base
-        else:
+        if role != 3:
             return Response({'message':'權限不足'},status=status.HTTP_403_FORBIDDEN)
-
-        data = EventRecordLocationSerializer(qs, many=True).data
-        return Response(data, status=status.HTTP_200_OK)
+        
+        paginator = StandardResultsSetPagination()
+        page = paginator.paginate_queryset(base, request, view=self)
+        serializer = EventRecordLocationSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 class ReviewedEventLocationsView(APIView):
     authentication_classes = [MyJWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -96,13 +96,12 @@ class ReviewedEventLocationsView(APIView):
         ).exclude(lat__isnull=True).exclude(lng__isnull=True)
 
         # Admin(3) 看全部；其他人只能看自己的
-        if role == 3:
-            qs = base
-        else:
+        if role !=3:
             return Response({'message':'權限不足'},status.HTTP_403_FORBIDDEN)
-
-        data = EventRecordLocationSerializer(qs, many=True).data
-        return Response(data, status=status.HTTP_200_OK)
+        paginator = StandardResultsSetPagination()
+        page = paginator.paginate_queryset(base, request, view=self)
+        serializer = EventRecordLocationSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 
