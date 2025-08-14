@@ -25,7 +25,13 @@ const Task = () => {
 
   if (loading) return (<><Header /><div className="container my-5 text-center">載入中...</div></>)
   if (error) return (<><Header /><div className="container my-5 text-danger text-center">{error}</div></>)
-
+  function handleClick(e) {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      e.preventDefault(); // 阻止跳轉
+      alert("請先登入後再查看詳情");
+    }
+  }
   return (
     <>
       <Header />
@@ -36,6 +42,7 @@ const Task = () => {
               <Link
                 href={`/details/${activity.id}`}
                 style={{ textDecoration: 'none', color: 'inherit' }}
+                onClick={handleClick}
               >
                 <div className="card h-100" style={{ cursor: 'pointer' }}>
                   <div className="card-body">
