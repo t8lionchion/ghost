@@ -81,8 +81,6 @@ class UserProgress(models.Model):
     last_checkin_at = models.DateTimeField(auto_now=True)
     last_lat = models.FloatField(null=True, blank=True)
     last_lng = models.FloatField(null=True, blank=True)
-    # 新增：存放該使用者在該活動的累計抽獎次數
-    lottery_times = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ('user', 'activity')

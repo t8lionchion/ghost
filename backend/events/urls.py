@@ -14,7 +14,5 @@ urlpatterns = [
      # 定位相關（新）
     path('activities/<int:id>/gate/', GateInfoView.as_view()),
     path('activities/<int:id>/checkin/', CheckinView.as_view()),
-    #anwser
-    path('api/activities/<int:active_id>/submit/', SubmitActivityAnswersAPIView.as_view(), name='submit_activity_answers'),
 
 ]
