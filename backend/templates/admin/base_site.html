@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ site_title|default:_("Django site admin") }}{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script src="{% static 'js/admin_unload_patch.js' %}"></script>
+{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name">
+    <a href="{% url 'admin:index' %}"> 幽約地圖後台管理</a>
+  </h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
