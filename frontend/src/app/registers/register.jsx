@@ -5,12 +5,13 @@ import axios from "axios";
 
 export function Register() {
   const router = useRouter()
-  
+
   const [email, setEmail] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [CheckPassword, setCheckPassword] = useState("");
-  
+  const [agree, setAgree] = useState(false);
+  const handleagree=(e) => setAgree(e.target.checked)
   const handleemail = ((e) => {
     setEmail(e.target.value)
   })
@@ -25,14 +26,18 @@ export function Register() {
   })
   const handleRegister = async (e) => {
     e.preventDefault()
+    if (!agree) {
+      alert("請先勾選同意條款才能註冊");
+      return;
+    }
     if (password !== CheckPassword) {
       alert('兩次密碼不一致！')
       return
     }
     try {
       const res = await axios.post(
-        process.env.NEXT_PUBLIC_API_BASE_URL+'/api/register/',
-        { "username":account, email, account, password },
+        process.env.NEXT_PUBLIC_API_BASE_URL + '/api/register/',
+        { "username": account, email, account, password },
         { headers: { 'Content-Type': 'application/json' } }
       )
       if (res.data.username) {
@@ -44,9 +49,9 @@ export function Register() {
       // 如果是帳號重複
       if (errors.account) {
         alert(errors.account)    // 後端傳回「帳號已存在」
-      }else if(errors.email){
+      } else if (errors.email) {
         alert(errors.email)
-      }else {
+      } else {
         alert('註冊失敗：' + (errors.non_field_errors || err.message))
       }
     }
@@ -105,7 +110,12 @@ export function Register() {
                 </div>
                 {/*  同意條款  */}
                 <div className="form-check mb-4">
-                  <input className="form-check-input" type="checkbox" id="agreeTerms" required />
+                  <input 
+                    className="form-check-input" 
+                    type="checkbox" 
+                    id="agreeTerms" 
+                    checked={agree}
+                    onChange={handleagree} />
                   <label className="form-check-label text-light" htmlFor="agreeTerms">
                     我已閱讀並同意 <a href="#" className="text-info">服務條款</a> 與 <a href="#" className="text-info">隱私權政策</a>
                   </label>
