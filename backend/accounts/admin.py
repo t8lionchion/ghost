@@ -2,8 +2,8 @@ from django.contrib import admin, messages
 from .models import Users, RoleStatus
 # 可自訂後台標題（中文）
 from django.contrib import admin
-admin.site.site_header = "幽約地圖後台管理"
-admin.site.index_title = "管理控制台"
+
+
 @admin.register(Users)
 class UsersAdmin(admin.ModelAdmin):
     list_display = (
