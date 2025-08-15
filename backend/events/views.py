@@ -15,6 +15,8 @@ from django.db.models import Prefetch
 from events.serializers import ActivityWithQuestionsSerializer
 from events.utils import haversine_m
 from django.shortcuts import get_object_or_404 
+from lottery.models import LotteryEntry
+
 # Create your views here.
 
 class GetActivity_fromView(APIView):
@@ -64,7 +66,7 @@ class GetActivityWithQuestionsView(APIView):
 class GateInfoView(APIView):
     """
     GET /api/activities/<id>/gate/
-    回傳此活動的 Gate 設定與目前使用者是否已通過 Gate。
+    回傳此活動的 經緯度 設定與目前使用者是否已通過 經緯度。
     """
     authentication_classes = [MyJWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -98,8 +100,9 @@ class GateInfoView(APIView):
 
 class CheckinView(APIView):
     """
-    POST /api/activities/<id>/checkin/
-    Body: { "lat": <float>, "lng": <float> }
+    POST /api/activities/id/checkin/
+    將使用者的經緯度傳給後端
+    request格式{ "lat": <float>, "lng": <float> }
     伺服器驗證是否在 Gate 半徑內，通過則標記 UserProgress。
     """
     authentication_classes = [MyJWTAuthentication]
@@ -133,3 +136,33 @@ class CheckinView(APIView):
             "distance_m": round(dist, 2),
             "radius_m": gate.radius_m
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class MyLotteryResultsView(APIView):
+    authentication_classes = [MyJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, activity_id):
+        # 確保活動存在（順便擋掉亂打 ID）
+        get_object_or_404(Activity_Form, pk=activity_id)
+
+        user_id = request.user.id
+        
+        qs = (LotteryEntry.objects
+              .filter(activity_id=activity_id, user_id=user_id)
+              .order_by('-created_at')
+              .values('id', 'is_winning', 'prize', 'created_at'))
+
+        results = list(qs)
+
+        # 回傳全部（可視需要限制筆數）
+        return Response(
+            {
+                "activity_id": int(activity_id),
+                "count": len(results),
+                "results": results,  # 每筆：{id, is_winning, prize, created_at}
+                "has_participated": bool(results),
+            },
+            status=status.HTTP_200_OK
+        )

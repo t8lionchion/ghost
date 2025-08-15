@@ -12,7 +12,7 @@ from lottery.serializers import SubmitAnswersSerializer
 from django.utils import timezone
 from django.db import transaction
 from django.db.models import F
-
+from lottery.serializers import ActivityCheckedIsjoinedSerializer
 # Create your views here.
 
 class SubmitActivityAnswersView(APIView):
@@ -86,5 +86,13 @@ class GetNumberOfDrawsView(APIView):
         times = LotteryEntry.objects.filter(
             user_id=user_id, activity_id=activity_id
         ).count()
-        prize_list = list(LotteryEntry.objects.values('id','prize', 'is_winning'))  # ← 變成 list[dict]
+        prize_list = list(LotteryEntry.objects.values('id','prize', 'is_winning','user_id'))  # ← 變成 list[dict]
         return Response({"times": times,"prize":prize_list}, status=200)
+
+class ActivityCheckedIsjoined(APIView):
+    authentication_classes = [MyJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request,id):
+        user_id = request.user.id  
+        joined = LotteryEntry.objects.filter(activity_id=id, user_id=user_id).exists()
+        return Response({"is_joined":joined},status=200)

@@ -12,6 +12,7 @@ class LotteryEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     prize=models.CharField(max_length=128)
     times=models.IntegerField()
+    is_joined=models.BooleanField(default=True)
     class Meta:
         indexes = [
             models.Index(fields=['activity', 'is_winning']),

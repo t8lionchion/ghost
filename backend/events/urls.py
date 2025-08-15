@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import GetActivity_fromView
 from .views import GetAllActivityView
-from .views import GetActivityWithQuestionsView,GateInfoView, CheckinView  
+from .views import GetActivityWithQuestionsView,GateInfoView,CheckinView,MyLotteryResultsView
 
 
     
@@ -12,4 +12,6 @@ urlpatterns = [
      # 定位相關（新）
     path('activities/<int:id>/gate/', GateInfoView.as_view()),
     path('activities/<int:id>/checkin/', CheckinView.as_view()),
+    #顯示抽獎結果
+    path('activities/<int:activity_id>/my-lottery/', MyLotteryResultsView.as_view(), name='my-lottery-results'),
 ]

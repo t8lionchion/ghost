@@ -20,3 +20,7 @@ class SubmitAnswersSerializer(serializers.Serializer):
         attrs['pairs'] = pairs
         return attrs
 
+class ActivityCheckedIsjoinedSerializer(serializers.Serializer):
+    class Meta:
+        model=LotteryEntry
+        fields=['is_joined']

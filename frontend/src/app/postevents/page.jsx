@@ -81,7 +81,12 @@ export default function ReportEventForm() {
       const detail =
         (err.response && (err.response.data.message || err.response.data.detail)) ||
         JSON.stringify(err.response ? err.response.data : {});
-      alert("上報失敗：" + detail);
+        if(detail.includes('Authentication credentials were not provided.')){
+          alert("請登入");
+        }else{
+          alert("不合上報規格")
+        }
+            
     } finally {
       setSubmitting(false);
     }

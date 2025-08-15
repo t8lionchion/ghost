@@ -12,7 +12,7 @@ def geocode_address(address: str):
         "key": api_key,
         "region": "tw",        # 台灣優先
         "language": "zh-TW",   # 回傳繁中
-        # "components": "country:TW",  # 若地址簡短，打開這行可提高命中
+        "components": "country:TW",  # 若地址簡短，打開這行可提高命中
     }
 
     try:

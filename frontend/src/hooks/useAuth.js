@@ -66,17 +66,27 @@ function useProvideAuth() {
       scheduleRefresh(expiresIn)
 
       setLoading(false)
+      router.push('/afterlogin')
       return { success: true }
     } catch (e) {
-      setError('登入失敗，請確認帳號密碼')
+      let message = '登入失敗，請確認帳號密碼'
+      if(e.response&&e.response.data.account.includes('此帳號已停用'))
+        message="帳號已遭停用，請聯繫管理員"
+      setError(message)
       setUser(null)
       setLoading(false)
-      return { success: false, error: '登入失敗，請確認帳號密碼' }
+      return { success: false, error: message}
     }
   }, [])
 
   // 登出
   const logout = useCallback(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("您未登入");
+      e.preventDefault(); // 阻止跳轉
+    }
+  
     clearRefreshTimeout()
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
