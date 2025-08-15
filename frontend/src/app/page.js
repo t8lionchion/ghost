@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useRouter } from "next/navigation"
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import {
   APIProvider,
   Map,
