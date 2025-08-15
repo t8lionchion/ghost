@@ -78,6 +78,12 @@ function useProvideAuth() {
 
   // 登出
   const logout = useCallback(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("您未登入");
+      e.preventDefault(); // 阻止跳轉
+    }
+  
     clearRefreshTimeout()
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
