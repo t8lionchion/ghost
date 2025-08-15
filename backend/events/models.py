@@ -8,6 +8,12 @@ class Activity_Form(models.Model):
     Activity_end_date=models.DateTimeField()
     address=models.CharField(max_length=1024)
     descripe=models.CharField(max_length=1024)
+    isActive=models.BooleanField(default=True)
+
+     # 抽獎控制
+    lottery_quota = models.PositiveIntegerField(default=3)       # 中獎名額
+    lottery_drawn = models.BooleanField(default=False)           # 是否已抽過
+    lottery_done_at = models.DateTimeField(null=True, blank=True)
     def __str__(self):
         return self.Activity_name
 #活動表單裡面的題目建立
