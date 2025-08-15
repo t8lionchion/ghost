@@ -69,10 +69,13 @@ function useProvideAuth() {
       router.push('/afterlogin')
       return { success: true }
     } catch (e) {
-      setError('登入失敗，請確認帳號密碼')
+      let message = '登入失敗，請確認帳號密碼'
+      if(e.response&&e.response.data.account.includes('此帳號已停用'))
+        message="帳號已遭停用，請聯繫管理員"
+      setError(message)
       setUser(null)
       setLoading(false)
-      return { success: false, error: '登入失敗，請確認帳號密碼' }
+      return { success: false, error: message}
     }
   }, [])
 
