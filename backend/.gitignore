@@ -14,3 +14,4 @@ Dockerfile
 Dockerfile:Zone.Identifier
 media
 static_collected
+staticfiles
