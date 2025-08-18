@@ -18,6 +18,14 @@ export function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container">
+                <Image
+                    src="/logo.png"           // ✅ 去掉 /public
+                    alt="幽約地圖 Logo"
+                    width={120}
+                    height={120}
+                    className="rounded-lg shadow-md"
+                    priority                       // （可選）首屏載入優先
+                />
                 <a className="navbar-brand" href="#">幽約地圖</a>
                 <button className="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                     <span className="navbar-toggler-icon"></span>
