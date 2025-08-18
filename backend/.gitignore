@@ -12,3 +12,5 @@ wheels/
 docker-compose.yml
 Dockerfile
 Dockerfile:Zone.Identifier
+media
+static_collected
