@@ -40,10 +40,8 @@ ghostmove/                  # 專案根目錄
 ├── ghostmove/              # 主設定（settings.py / urls.py）
 ├── manage.py               # 指令入口
 ├── accounts/               # 用戶系統、JWT、註冊／登入
-├── maps/                   # 地圖與標記 API
 ├── events/                 # 活動報名系統
-├── records/                # 靈異事件投稿
-├── orders/                 # 金流訂單管理
+├── records/                # 靈異事件投稿+地圖與標記 API
 ├── lottery/                # 抽獎系統
 └── pyproject.toml          # 套件定義
 ```
@@ -68,10 +66,6 @@ graph TD
       A4[urls.py]
       A5[permissions.py]
     end
-    subgraph maps[maps]
-      M1[models.py]
-      M2[views.py]
-    end
     subgraph events[events]
       E1[models.py]
       E2[serializers.py]
@@ -81,19 +75,17 @@ graph TD
     end
     subgraph records[records]
       R1[models.py]
-      R2[views.py]
-      R3[admin.py]
-      R4[urls.py]
-    end
-    subgraph orders[orders]
-      O1[models.py]
-      O2[views.py]
-      O3[urls.py]
+      R2[serializers.py]
+      R3[views.py]
+      R4[admin.py]
+      R5[urls.py]
     end
     subgraph lottery[lottery]
       L1[models.py]
-      L2[views.py]
-      L3[urls.py]
+      L2[serializers.py]
+      L3[views.py]
+      L4[admin.py]
+      L5[urls.py]
     end
   end
 ```
