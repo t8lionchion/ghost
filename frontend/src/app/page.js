@@ -8,6 +8,7 @@ import {
   useMap,
   AdvancedMarker,
 } from "@vis.gl/react-google-maps";
+import {GuideModal} from './components/Guidemodal';
 import { Circle } from "./components/circle"; // 目前未用到，可視需要保留
 
 // ── 小工具：台灣時間格式化 ───────────────────────────────
@@ -207,18 +208,26 @@ export default function Home() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [legendOpen, setLegendOpen] = useState(false);
-
+  const [introOpen, setIntroOpen] = useState(false); // ← 新增：引導視窗開關
   useEffect(() => {
     fetchLocations()
       .then((data) => setLocations(data))
       .catch((err) => console.error("載入地點失敗:", err))
       .finally(() => setLoading(false));
   }, []);
-
+  // ← 新增：第一次進頁才顯示（用 localStorage 記憶）
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!localStorage.getItem("ghostmove_intro_done")) {
+      setIntroOpen(true);
+    }
+  }, []);
   const router = useRouter();
 
   return (
     <>
+       {/* ← 新增：引導視窗（可關閉、可記憶） */}
+      <GuideModal open={introOpen} onClose={() => setIntroOpen(false)} />
       <div className="container mb-4 mt-4 d-flex justify-content-between align-items-center">
         <div className="text-light small">
           {/* 可選：顯示更新時間或公告 */}
