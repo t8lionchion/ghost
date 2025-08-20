@@ -2,12 +2,15 @@
 import Image from 'next/image'
 import { useEffect,useState } from 'react';
 import { useAuth } from "@/hooks/useAuth"
+import { useRouter } from "next/navigation";
 import Link from "next/link"; // ← 加這行
 export function Navbar() {
     const { user, logout } = useAuth()
     const isAuthenticated = !!user
     const profileHref = isAuthenticated ? "/afterlogin" : "/accounts"; // 路徑請與你的檔案一致
     const [accesstoken,setAccesstoken]=useState(null);
+    const router = useRouter();
+    
     function handleuserlevel() {
         if (user?.role == 1) {
             return '一般會員'
@@ -28,7 +31,9 @@ export function Navbar() {
     function Handlenotlogin() {
         if (!accesstoken){
             return(
-                <ul aria-labelledby="userDropdown"></ul>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" >
+                    <li><a className="dropdown-item" href="/accounts">前往登入</a></li>
+                </ul>
             )
         }else{
             return (
