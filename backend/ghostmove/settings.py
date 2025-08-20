@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-w)^o8gc-ux285h%n5loqfzl13e5@e6c%_d77+kuq9-@7ba^$a0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "ghostmove.decheng.dev"]
+
 
 
 # Application definition
@@ -164,3 +165,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'  # 或你的 media 實際資料夾路徑
 GOOGLE_MAPS_API_KEY ='AIzaSyAGxuirR3w8akHVf4ctRU3AueZs_udh5LA'
 
+CSRF_TRUSTED_ORIGINS = ["https://ghostmove.decheng.dev"]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True

@@ -5,10 +5,11 @@ from .models import (
     Activity_Form, Active_questions, Active_question_options,
     GeoCheckpoint, UserProgress
 )
+from django.db import transaction
 from nested_admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
 # ✅ 使用你的定位函式（匯入路徑請依你檔案實際位置調整）
 from common.services.geocode import geocode_address  # 例如 common/services/geocode.py
-
+from services.lottery import draw_winners_for_activity
 # ========= 巢狀 Inline =========
 
 # --- 選項（每題固定 4 個，可拖曳 sort_order） ---
@@ -44,6 +45,9 @@ class GeoCheckpointInline(NestedTabularInline):
     verbose_name = "定位 Gate"
     verbose_name_plural = "定位 Gate"
 
+
+
+
 @admin.register(Activity_Form)
 class ActivityAdmin(NestedModelAdmin):
     list_display = ("Activity_name", "Activity_start_date", "Activity_end_date",
@@ -51,9 +55,29 @@ class ActivityAdmin(NestedModelAdmin):
                     )
     list_filter = ("isActive", "lottery_drawn", "Activity_start_date", "Activity_end_date")
     search_fields = ("Activity_name", "address", "descripe")
-
+    actions = ["run_lottery", "geocode_selected"]
     # 這裡一次帶三層：活動 → 題目 → 選項；以及 Gate
     inlines = [QuestionInline, GeoCheckpointInline]
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        print("ADMIN ACTIONS:", list(actions.keys()))  # 到 journalctl 觀看
+        return actions
+    @admin.action(description="抽出得獎者")
+    def run_lottery(self, request, queryset):
+        done, skipped = 0, 0
+        with transaction.atomic():
+            for act in queryset.select_for_update():
+                if getattr(act, "lottery_drawn", False):
+                    skipped += 1
+                    continue
+                winners = draw_winners_for_activity(act)
+                act.lottery_drawn = True
+                act.save(update_fields=["lottery_drawn"])
+                done += 1
+        if done:
+            self.message_user(request, f"完成 {done} 筆抽獎。", level=messages.SUCCESS)
+        if skipped:
+            self.message_user(request, f"略過 {skipped} 筆（已抽過）。", level=messages.INFO)
 
     # --- 批次動作：重新定位 Gate（依地址） ---
     @admin.action(description="重新定位 Gate（依地址）")
@@ -88,7 +112,7 @@ class ActivityAdmin(NestedModelAdmin):
 
         self.message_user(request, f"定位成功 {ok} 筆，失敗 {fail} 筆。", level=messages.INFO)
 
-    actions = ["geocode_selected"]
+    
     
 
     # --- 儲存活動時自動定位（新增與編輯都會觸發） ---
@@ -159,6 +183,8 @@ class UserProgressAdmin(admin.ModelAdmin):
     list_display = ("user", "activity", "unlocked_stage", "last_checkin_at", "last_lat", "last_lng")
     list_filter = ("activity", "unlocked_stage")
     search_fields = ("user__username", "activity__Activity_name")
+
+
 
 admin.site.site_header = "活動管理後台"
 admin.site.site_title = "活動管理後台"
